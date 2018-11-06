@@ -184,14 +184,14 @@ bool OccupancyMapFromWorld::worldCellIntersection(const math::Vector3& cell_cent
   double dist;
   std::string entity_name;
 
-  int cell_length_steps = 10;
+  int cell_length_steps = 3;
   double side_length;
 
   //check for collisions with beams at increasing sizes to capture smaller
   //objects inside the cell
   for(int step=1; step<=cell_length_steps; step++)
   {
-    side_length = cell_length / cell_length_steps * step;
+    side_length = cell_length / cell_length_steps * step + 0.01;
 
     for(int i=-1; i<2; i+=2)
     {
@@ -303,7 +303,7 @@ void OccupancyMapFromWorld::CreateOccupancyMap()
   std::cout << "Starting wavefront expansion for mapping" << std::endl;
 
   //identify free space by spreading out from initial robot cell
-  double robot_x = 0;
+  double robot_x = -1;
   double robot_y = 0;
 
   //find initial robot cell
