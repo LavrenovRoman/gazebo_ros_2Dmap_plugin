@@ -377,6 +377,24 @@ void OccupancyMapFromWorld::CreateOccupancyMap()
 
   map_pub_.publish(*occupancy_map_);
   std::cout << "\rOccupancy Map generation completed                  " << std::endl;
+
+  // Save map to file
+  // Get path and file name
+  std::string package_path = ros::package::getPath("crowdbot_active_slam");
+  std::string save_path = package_path + "/worlds/occupancy_grid_map.txt";
+
+  // Save map
+  std::ofstream map_file(save_path.c_str());
+  if (map_file.is_open()){
+    for (int i = 0; i < occupancy_map_->data.size(); i++){
+      map_file << int(occupancy_map_->data[i]) << std::endl;
+    }
+    map_file.close();
+    std::cout << "Occupancy Map saved to file" << std::endl;
+  }
+  else{
+    ROS_INFO("Could not open occupancy_grid_map.txt!");
+  }
 }
 
 // Register this plugin with the simulator
